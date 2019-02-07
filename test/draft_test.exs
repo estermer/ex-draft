@@ -37,4 +37,10 @@ defmodule DraftTest do
     output = "<br>"
     assert Draft.to_html(input) == output
   end
+
+  test "wraps bold text" do
+    input = %{"entityMap"=>%{},"blocks"=>[%{"text"=>"Hello","inlineStyleRanges"=>[%{"style"=>"BOLD","offset"=>2,"length"=>2}],"type"=>"unstyled","depth"=>0,"entityRanges"=>[],"data"=>%{},"key"=>"9d21d"}]}
+    output = "<p>He<span style=\"font-weight: bold;\">ll</span>o</p>"
+    assert Draft.to_html(input) == output
+  end
 end

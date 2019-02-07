@@ -3,6 +3,8 @@ defmodule Draft.Block do
   Converts a single DraftJS block to html.
   """
 
+  alias Draft.InlineStyleRange
+
   @doc """
   Renders the given DraftJS input as html.
 
@@ -33,9 +35,9 @@ defmodule Draft.Block do
                       "data" => _,
                       "depth" => _,
                       "entityRanges" => _,
-                      "inlineStyleRanges" => _}) do
+                      "inlineStyleRanges" => inline_style_ranges}) do
     tag = header_tags[header]
-    "<#{tag}>#{text}</#{tag}>"
+    "<#{tag}>#{InlineStyleRange.apply(text, inline_style_ranges)}</#{tag}>"
   end
 
   defp process_block(%{"type" => "blockquote",
@@ -44,8 +46,8 @@ defmodule Draft.Block do
                       "data" => _,
                       "depth" => _,
                       "entityRanges" => _,
-                      "inlineStyleRanges" => _}) do
-    "<blockquote>#{text}</blockquote>"
+                      "inlineStyleRanges" => inline_style_ranges}) do
+    "<blockquote>#{InlineStyleRange.apply(text, inline_style_ranges)}</blockquote>"
   end
 
   defp process_block(%{"type" => "unstyled",
@@ -54,8 +56,8 @@ defmodule Draft.Block do
                       "data" => _,
                       "depth" => _,
                       "entityRanges" => _,
-                      "inlineStyleRanges" => _}) do
-    "<p>#{text}</p>"
+                      "inlineStyleRanges" => inline_style_ranges}) do
+    "<p>#{InlineStyleRange.apply(text, inline_style_ranges)}</p>"
   end
 
   defp header_tags do
